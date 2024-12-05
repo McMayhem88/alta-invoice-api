@@ -1,0 +1,41 @@
+services:
+  db:
+    image: postgres:17-alpine
+    container_name: alta_postgres_db
+    environment:
+      POSTGRES_USER: admin
+      POSTGRES_PASSWORD: 1234
+      POSTGRES_DB: alta_db
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+
+  backend:
+    build:
+      context: ./backend-project
+      dockerfile: Dockerfile
+    container_name: alta_backend
+    environment:
+      DATABASE_URL: postgresql://admin:1234@db:5432/alta_db?schema=public
+      JWT_SECRET: alta_test_secret_key
+      JWT_EXPIRES_IN: 3600S
+    ports:
+      - '3000:3000'
+    depends_on:
+      - db
+
+  frontend:
+    build:
+      context: ./frontend-project
+      dockerfile: Dockerfile
+    container_name: alta_frontend
+    environment:
+      REACT_APP_API_URL: http://localhost:3000
+    ports:
+      - '5173:5173'
+    depends_on:
+      - backend
+
+volumes:
+  postgres_data:

@@ -1,0 +1,13 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+    --content-width: 1280px;
+}
+
+.content-container {
+    width: 100%;
+    max-width: var(--content-width);
+    margin: 0 auto;
+}

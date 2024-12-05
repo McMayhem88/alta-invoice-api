@@ -1,0 +1,9 @@
+*.sh     text eol=lf
+
+# Ensure TypeScript and JavaScript files use LF
+*.ts     text eol=lf
+*.js     text eol=lf
+
+# Other file types can follow default or specified conventions
+*.json   text
+*.md     text
