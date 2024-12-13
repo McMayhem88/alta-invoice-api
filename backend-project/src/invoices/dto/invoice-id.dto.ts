@@ -1,7 +1,10 @@
 import {IsInt, Min} from "class-validator";
 import {Type} from 'class-transformer';
 
-export class InvoiceIdDto {
+/**
+ * DTO for invoice input validation
+ */
+export class InvoiceIdDto { //!! I really only use DTOs for more complex objects and POST endpoints, but I felt it was necessary
   @Type(() => Number)
   @IsInt({message: 'Invoice ID must be a number'})
   @Min(0)

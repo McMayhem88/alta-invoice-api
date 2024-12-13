@@ -26,9 +26,14 @@ FROM node:alpine
 
 WORKDIR /app
 
+#@@ This was necessary because Prisma requires OpenSSL to run properly
+#@@ I believe this is what was causing the issues with docker builds.
+RUN apk add --no-cache openssl
+
 # Copy the necessary files
 COPY package*.json ./
 RUN npm install
+
 
 # Copy build files from the builder stage
 COPY --from=builder /app/dist ./dist
@@ -43,3 +48,5 @@ EXPOSE 3000
 
 # Set the entrypoint
 ENTRYPOINT ["./entrypoint.sh"]
+#@@ The `entrypoint.sh` file runs the `prisma generate` and `prisma migrate` commands and starts
+#@@ the production build.

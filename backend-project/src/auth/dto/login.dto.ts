@@ -1,5 +1,8 @@
 import {IsEmail, IsNotEmpty, MaxLength, MinLength} from "class-validator";
 
+/**
+ * DTO for type validation of login input
+ */
 export class LoginDto {
   @IsEmail({}, {message: 'Email address is not valid'})
   email: string;

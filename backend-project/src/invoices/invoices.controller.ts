@@ -17,14 +17,22 @@ import {PaginationDto} from "./dto/pagination.dto";
 import {Util} from "../utils/utils";
 import {ResultData} from "./interfaces/invoices.interfaces";
 
+/**
+ * Controller class for handling REST endpoints for querying invoices
+ */
 @Controller('invoices')
 export class InvoicesController {
   constructor(
-    private usersService: UsersService,
+    private usersService: UsersService, //@@ - Utilized for validating the current user
     private invoicesService: InvoicesService
   ) {
   }
   
+  /**
+   * Returns all invoices in the database for the currently logged-in user
+   * @param req The request object to pull the current user from
+   * @param pagination Object representing query parameters to specify pagination options
+   */
   @UseGuards(JwtAuthGuard)
   @Get()
   async getAllInvoices(@Request() req, @Query() pagination?: PaginationDto): Promise<ResultData> {
@@ -32,17 +40,26 @@ export class InvoicesController {
     return await this.invoicesService.findAllByUser(userId, pagination);
   }
   
+  /**
+   * Returns a list of aggregated totals of invoices grouped by due date
+   * @param req The request object to pull the current user from
+   */
   @UseGuards(JwtAuthGuard)
   @Get('total')
   async getTotalsByDueDate(@Request() req): Promise<Invoice[]> {
     const userId = await this.validateUserId(req.user?.userId || null);
     const totals = await this.invoicesService.getTotalByDueDate(userId);
-    if (Util.isNullOrEmpty(totals)) {
+    if (Util.isNullOrEmpty(totals)) { //!! Probably not necessary to throw an error here, in the case this is a new user
       throw new NotFoundException("No results found for the current user");
     }
     return totals;
   }
   
+  /**
+   * Returns a single invoice from the database using the provided `id`
+   * @param params Object representing the input parameters for the query (`id`)
+   * @param req The request object to pull the current user from
+   */
   @UseGuards(JwtAuthGuard)
   @Get(':id')
   async getInvoiceById(@Param() params: InvoiceIdDto, @Request() req): Promise<Invoice> {

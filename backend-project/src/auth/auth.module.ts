@@ -11,13 +11,15 @@ import {ConfigModule, ConfigService} from '@nestjs/config';
 
 @Module({
   imports: [
-    UsersModule,
-    PassportModule,
+    UsersModule, //@@ Used to pull the UserService to check if a specific user exists in the database
+    PassportModule, //@@ Automated handling for authentication strategies
+    //@@ Using Nest's built-in JWT module as auth middleware
     JwtModule.registerAsync({
       imports: [ConfigModule],
       useFactory: async (configService: ConfigService) => ({
         secret: configService.get<string>(JWT_CONSTANTS.secret),
         signOptions: {
+          //!! This really could have been hard-coded
           expiresIn: configService.get<string>(JWT_CONSTANTS.expiresIn),
         }
       }),

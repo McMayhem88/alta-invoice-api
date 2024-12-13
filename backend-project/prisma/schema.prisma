@@ -23,7 +23,7 @@ model User {
 model Invoice {
   id          Int      @id @default(autoincrement())
   vendor_name String
-  amount      Decimal
+  amount      Decimal //@@ I prefer storing currency as Decimal rather than float to prevent issues due to inaccuracy
   due_date    DateTime
   description String
   user_id     Int

@@ -5,6 +5,9 @@ import {JWT_CONSTANTS} from "./auth.constants";
 import {UsersService} from "../users/users.service";
 import {ConfigService} from "@nestjs/config";
 
+/**
+ * JWT authentication strategy class to handle user validation and token configuration
+ */
 @Injectable()
 export class JwtStrategy extends PassportStrategy(Strategy) {
   constructor(
@@ -18,6 +21,10 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
     });
   }
   
+  /**
+   * Called automatically when a user tries to access an endpoint using a JWT guard
+   * @param payload
+   */
   async validate(payload: any) {
     const user = await this.userService.findByEmail(payload.username);
     if (!user) {

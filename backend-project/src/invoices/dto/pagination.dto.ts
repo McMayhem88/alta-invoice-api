@@ -1,6 +1,9 @@
 import {IsInt, IsOptional, Min} from "class-validator";
 import {Transform} from "class-transformer";
 
+/**
+ * DTO to validate pagination parameters passed to the invoice list function
+ */
 export class PaginationDto {
   @IsOptional()
   @Transform(({value}) => parseInt(value, 10))

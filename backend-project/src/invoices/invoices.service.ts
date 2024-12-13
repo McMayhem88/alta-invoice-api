@@ -4,6 +4,9 @@ import {Invoice} from "@prisma/client";
 import {PaginationDto} from "./dto/pagination.dto";
 import {ResultData} from "./interfaces/invoices.interfaces";
 
+/**
+ * Service class for handling invoice query operations
+ */
 @Injectable()
 export class InvoicesService {
   constructor(private prisma: PrismaService) {
