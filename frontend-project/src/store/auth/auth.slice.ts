@@ -5,6 +5,7 @@ interface AuthState {
 }
 
 const initialState: AuthState = {
+  //!! Should have added a method to validate the token here and remove it if invalid
   token: localStorage.getItem("token"),
 };
 
